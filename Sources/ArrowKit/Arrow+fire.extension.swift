@@ -8,10 +8,10 @@ public extension Arrow {
             try Self.shoot(supportedApiLevels: supportedApiLevels, arguments: arguments)
             exit(0)
         } catch let error as ExitCodeError {
-            print("🏹 Failed: \(error)")
+            print("🏹\tFailed: \(error)")
             exit(Int32(error.code))
         } catch {
-            print("🏹 Failed: \(error)")
+            print("🏹\tFailed: \(error)")
             exit(1)
         }
     }

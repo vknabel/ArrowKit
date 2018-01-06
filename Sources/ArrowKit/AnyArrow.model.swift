@@ -16,6 +16,9 @@ public struct AnyArrow: Arrow, Decodable, Equatable {
     self.arrow = arrow
     var mutableMetadata = metadata
     mutableMetadata["arrow"] = arrow
+    if let help = help {
+      mutableMetadata["help"] = help
+    }
     self.metadata = mutableMetadata
     self.help = help
   }
@@ -26,7 +29,11 @@ public struct AnyArrow: Arrow, Decodable, Equatable {
         try container.decode(String.self, forKey: .arrow)
       }
       self.metadata = try [String: Any](from: decoder)
-      self.help = try container.decode(String.self, forKey: .help)
+      if container.contains(.help) {
+        self.help = try container.decode(String.self, forKey: .help)
+      } else {
+        self.help = nil
+      }
     } else if let container = try? decoder.singleValueContainer() {
       self.arrow = try require(or: ArrowError.adapterShorthandMustBeString) {
         try container.decode(String.self)
