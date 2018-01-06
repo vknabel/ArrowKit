@@ -108,13 +108,15 @@ internal func decodeValue(from container: inout KeyedDecodingContainer<StringCod
 
 internal func decodeUnkeyedValue(from container: inout UnkeyedDecodingContainer) throws -> [Any] {
   var array = [Any]()
+    print(container.currentIndex)
     while !container.isAtEnd {
+        print(container.currentIndex)
         if var keyedContainer = try? container.nestedContainer(keyedBy: StringCodingKey.self) {
             array.append(try decodeValue(from: &keyedContainer))
         } else if var unkeyedContainer = try? container.nestedUnkeyedContainer() {
             array.append(try decodeUnkeyedValue(from: &unkeyedContainer))
         } else {
-            throw ArrowError.couldNotDecodeValue(container.codingPath, nil)
+            array.append(try decodeValue(from: &container))
         }
     }
   return array
