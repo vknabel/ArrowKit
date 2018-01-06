@@ -7,8 +7,8 @@ internal extension Dictionary where Key == String, Value == Any {
 
 internal extension Array where Element == Any {
   init(from decoder: Decoder) throws {
-    var container = try decoder.container(keyedBy: IntCodingKey.self)
-    self = try decodeValue(from: &container)
+    var container = try decoder.unkeyedContainer()
+    self = try decodeUnkeyedValue(from: &container)
   }
 }
 
@@ -72,7 +72,7 @@ internal func decodeValue(from container: inout UnkeyedDecodingContainer) throws
   } else if let value = try? container.decode(Null.self) {
     return value
   } else {
-    throw ArrowError.couldNotDecodeValue(container.codingPath, nil)
+    throw ArcheryError.couldNotDecodeValue(container.codingPath, nil)
   }
 }
 
@@ -88,7 +88,7 @@ internal func decodeAnyValue<K>(forKey key: K, from container: inout KeyedDecodi
   } else if let value = try? container.decode(Null.self, forKey: key) {
     return value
   } else {
-    throw ArrowError.couldNotDecodeValue(container.codingPath + [key], nil)
+    throw ArcheryError.couldNotDecodeValue(container.codingPath + [key], nil)
   }
 }
 
@@ -97,8 +97,8 @@ internal func decodeValue(from container: inout KeyedDecodingContainer<StringCod
   for key in container.allKeys {
     if var keyedContainer = try? container.nestedContainer(keyedBy: StringCodingKey.self, forKey: key) {
       dict[key.stringValue] = try decodeValue(from: &keyedContainer)
-    } else if var keyedContainer = try? container.nestedContainer(keyedBy: IntCodingKey.self, forKey: key) {
-      dict[key.stringValue] = try decodeValue(from: &keyedContainer)
+    } else if var unkeyedContainer = try? container.nestedUnkeyedContainer(forKey: key) {
+        dict[key.stringValue] = try decodeUnkeyedValue(from: &unkeyedContainer)
     } else {
       dict[key.stringValue] = try decodeAnyValue(forKey: key, from: &container)
     }
@@ -106,18 +106,16 @@ internal func decodeValue(from container: inout KeyedDecodingContainer<StringCod
   return dict
 }
 
-internal func decodeValue(from container: inout KeyedDecodingContainer<IntCodingKey>) throws -> [Any] {
+internal func decodeUnkeyedValue(from container: inout UnkeyedDecodingContainer) throws -> [Any] {
   var array = [Any]()
-  for key in container.allKeys {
-    if var keyedContainer = try? container.nestedContainer(keyedBy: StringCodingKey.self, forKey: key) {
-      array[key.value] = try decodeValue(from: &keyedContainer)
-    } else if var keyedContainer = try? container.nestedContainer(keyedBy: IntCodingKey.self, forKey: key) {
-      array[key.value] = try decodeValue(from: &keyedContainer)
-    } else if var unkeyedContainer = try? container.nestedUnkeyedContainer(forKey: key) {
-      array[key.value] = try decodeValue(from: &unkeyedContainer)
-    } else {
-      throw ArrowError.couldNotDecodeValue(container.codingPath, nil)
+    while !container.isAtEnd {
+        if var keyedContainer = try? container.nestedContainer(keyedBy: StringCodingKey.self) {
+            array.append(try decodeValue(from: &keyedContainer))
+        } else if var unkeyedContainer = try? container.nestedUnkeyedContainer() {
+            array.append(try decodeUnkeyedValue(from: &unkeyedContainer))
+        } else {
+            throw ArcheryError.couldNotDecodeValue(container.codingPath, nil)
+        }
     }
-  }
   return array
 }

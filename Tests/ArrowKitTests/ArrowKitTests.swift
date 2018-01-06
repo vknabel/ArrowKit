@@ -6,7 +6,10 @@ class ArrowKitTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(ArrowKit().text, "Hello, World!")
+        let data = """
+        {"arrow":"x","array":[""]}
+        """.data(using: .utf8)!
+        JSONDecoder().decode(AnyArrow.self, data)
     }
 
 
