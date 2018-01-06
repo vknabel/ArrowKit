@@ -72,7 +72,7 @@ internal func decodeValue(from container: inout UnkeyedDecodingContainer) throws
   } else if let value = try? container.decode(Null.self) {
     return value
   } else {
-    throw ArcheryError.couldNotDecodeValue(container.codingPath, nil)
+    throw ArrowError.couldNotDecodeValue(container.codingPath, nil)
   }
 }
 
@@ -88,7 +88,7 @@ internal func decodeAnyValue<K>(forKey key: K, from container: inout KeyedDecodi
   } else if let value = try? container.decode(Null.self, forKey: key) {
     return value
   } else {
-    throw ArcheryError.couldNotDecodeValue(container.codingPath + [key], nil)
+    throw ArrowError.couldNotDecodeValue(container.codingPath + [key], nil)
   }
 }
 
@@ -114,7 +114,7 @@ internal func decodeUnkeyedValue(from container: inout UnkeyedDecodingContainer)
         } else if var unkeyedContainer = try? container.nestedUnkeyedContainer() {
             array.append(try decodeUnkeyedValue(from: &unkeyedContainer))
         } else {
-            throw ArcheryError.couldNotDecodeValue(container.codingPath, nil)
+            throw ArrowError.couldNotDecodeValue(container.codingPath, nil)
         }
     }
   return array
