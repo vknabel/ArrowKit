@@ -1,5 +1,5 @@
 private enum AnyArrowKey: String, CodingKey {
-  case kind
+  case arrow
   case help
 }
 
@@ -23,7 +23,7 @@ public struct AnyArrow: Arrow, Decodable, Equatable {
   public init(from decoder: Decoder) throws {
     if let container = try? decoder.container(keyedBy: AnyArrowKey.self) {
       self.arrow = try require(or: ArrowError.adapterDictMustContainAdapter) {
-        try container.decode(String.self, forKey: .kind)
+        try container.decode(String.self, forKey: .arrow)
       }
       self.metadata = try [String: Any](from: decoder)
       self.help = try container.decode(String.self, forKey: .help)
