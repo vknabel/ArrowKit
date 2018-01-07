@@ -37,7 +37,14 @@ public extension Arrow {
         }
         let archerfile = try parseArcherfile(from: archerfileData)
         let arrow = try parseArrow(from: scriptData)
-        return try arrow.fire(archerfile: archerfile, arguments: arguments)
+        let options = try parseExecutionOptions(from: scriptData)
+        let invocationPrefix = options.shouldPassArrowParameters
+                ? [String(Self.supportedApiLevels.upperBound - 1), archerfileContents, arrowContents]
+                : []
+        return try arrow.fire(
+            archerfile: archerfile,
+            arguments: invocationPrefix + arguments
+        )
     }
 
     private static func parseArcherfile(from data: Data) throws -> Archerfile {
@@ -51,6 +58,13 @@ public extension Arrow {
         return try require(
             or: ArrowError.invalidScriptFormat,
             { try JSONDecoder().decode(Self.self, from: data) }
+        )
+    }
+
+    private static func parseExecutionOptions(from data: Data) throws -> ExecutionOptions {
+        return try require(
+            or: ArrowError.invalidScriptFormat,
+            { try JSONDecoder().decode(ExecutionOptions.self, from: data) }
         )
     }
 }
