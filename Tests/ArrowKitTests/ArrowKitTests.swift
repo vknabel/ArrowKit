@@ -7,11 +7,10 @@ class ArrowKitTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
         let data = """
-        {"arrow":"x","array":[""]}
+        {"arrow":"x","array":["", ""]}
         """.data(using: .utf8)!
-        JSONDecoder().decode(AnyArrow.self, data)
+        print(try! JSONDecoder().decode(AnyArrow.self, from: data).metadata)
     }
-
 
     static var allTests = [
         ("testExample", testExample),
