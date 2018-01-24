@@ -7,12 +7,16 @@ public extension Arrow {
         do {
             try Self.shoot(supportedApiLevels: supportedApiLevels, arguments: arguments)
             exit(0)
+        } catch let error as NSError where error.domain == NSCocoaErrorDomain {
+            print("💥  \(error.localizedDescription)")
+            exit(1)
         } catch let error as ExitCodeError {
             print("💥  \(error)")
-            exit(Int32(error.code))
-        } catch {
-            print("💥  \(error)")
-            exit(1)
+            if let error = error as? ExitCodeError {
+                exit(Int32(error.code))
+            } else {
+                exit(1)
+            }
         }
     }
 

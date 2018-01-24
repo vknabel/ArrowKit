@@ -13,7 +13,7 @@ public struct Archerfile: Decodable {
     }
 
     if container.contains(.scripts) {
-        scripts = try require(or: ArrowError.generateRequired) {
+        scripts = try require(or: ArrowError.scriptsRequired) {
             try container.decode([String: AnyArrow].self, forKey: .scripts)
         }
     } else {

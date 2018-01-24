@@ -25,7 +25,7 @@ public struct AnyArrow: Arrow, Decodable, Equatable {
 
   public init(from decoder: Decoder) throws {
     if let container = try? decoder.container(keyedBy: AnyArrowKey.self) {
-      self.arrow = try require(or: ArrowError.adapterDictMustContainAdapter) {
+      self.arrow = try require(or: ArrowError.arrowDictMustContainArrow) {
         try container.decode(String.self, forKey: .arrow)
       }
       self.metadata = try [String: Any](from: decoder)
@@ -35,20 +35,20 @@ public struct AnyArrow: Arrow, Decodable, Equatable {
         self.help = nil
       }
     } else if let container = try? decoder.singleValueContainer() {
-      self.arrow = try require(or: ArrowError.adapterShorthandMustBeString) {
+      self.arrow = try require(or: ArrowError.arrowShorthandMustBeString) {
         try container.decode(String.self)
       }
       self.metadata = ["arrow": arrow]
       self.help = nil
     } else {
-      throw ArrowError.adapterRequiresStringOrDictWithAdapter(
+      throw ArrowError.arrowRequiresStringOrDictWithArrow(
         decoder.codingPath,
         decoder.userInfo
       )
     }
   }
 
-    public func fire(archerfile: Archerfile, arguments: [String]) throws {
-        throw ArrowError.cannotFireAnyArrow(self, archerfile, arguments)
-    }
+  public func fire(archerfile: Archerfile, arguments: [String]) throws {
+    throw ArrowError.cannotFireAnyArrow(self, archerfile, arguments)
+  }
 }
