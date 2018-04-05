@@ -1,0 +1,12 @@
+{
+    "name": "ArrowKit",
+    "version": "0.2.0",
+    "scripts": {
+        "format": {
+            "arrow": "vknabel/BashArrow",
+            "help": "Reformats all Swift code. Requires swiftformat to be installed globally.\nSee https://github.com/nicklockwood/SwiftFormat/pull/183",
+            "comment": "Requires https://github.com/nicklockwood/SwiftFormat/pull/183",
+            "command": "swiftformat ."
+        }
+    }
+}

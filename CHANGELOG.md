@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+* `catch` inside `Arrow.fire` was not exhaustive
+
 ## 0.2.0
 
 * Better log messages

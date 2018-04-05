@@ -12,11 +12,10 @@ public extension Arrow {
             exit(1)
         } catch let error as ExitCodeError {
             print("💥  \(error)")
-            if let error = error as? ExitCodeError {
-                exit(Int32(error.code))
-            } else {
-                exit(1)
-            }
+            exit(Int32(error.code))
+        } catch {
+            print("💥  \(error)")
+            exit(1)
         }
     }
 
