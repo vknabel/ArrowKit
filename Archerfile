@@ -5,6 +5,6 @@ scripts:
     arrow: vknabel/BashArrow
     help: |-
           Reformats all Swift code. Requires swiftformat to be installed globally.
-          See https://github.com/nicklockwood/SwiftFormat/pull/183"
+          See https://github.com/nicklockwood/SwiftFormat/pull/183
     comment": Requires https://github.com/nicklockwood/SwiftFormat/pull/183
     command": swiftformat .
