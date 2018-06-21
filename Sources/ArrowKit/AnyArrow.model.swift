@@ -35,10 +35,11 @@ public struct AnyArrow: Arrow, Decodable, Equatable {
         self.help = nil
       }
     } else if let container = try? decoder.singleValueContainer() {
-      self.arrow = try require(or: ArrowError.arrowShorthandMustBeString) {
+      self.arrow = "vknabel/BashArrow"
+      let command = try require(or: ArrowError.arrowShorthandMustBeString) {
         try container.decode(String.self)
       }
-      self.metadata = ["arrow": arrow]
+      self.metadata = ["arrow": arrow, "command": command]
       self.help = nil
     } else {
       throw ArrowError.arrowRequiresStringOrDictWithArrow(

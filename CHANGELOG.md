@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2
+
+* Now default to `vknabel/BashArrow`
+
 ## 0.2.1
 
 * `catch` inside `Arrow.fire` was not exhaustive
