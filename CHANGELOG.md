@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.3
+
+* Increases `swift-tools-version` to `5.0`
+
 ## 0.2.2
 
 * Now default to `vknabel/BashArrow`. See [vknabel/Archery#0.2.1](https://github.com/vknabel/Archery/blob/master/CHANGELOG.md#021)

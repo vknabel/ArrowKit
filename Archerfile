@@ -1,5 +1,5 @@
 name: ArrowKit
-version: 0.2.2
+version: 0.2.3
 scripts:
   format:
     arrow: vknabel/BashArrow
