@@ -3,7 +3,7 @@ import Foundation
 extension NSError: ExitCodeError {}
 
 public extension Arrow {
-    public static func fire(supportedApiLevels: Range<Int> = Self.supportedApiLevels, arguments: [String] = Array(CommandLine.arguments.dropFirst())) -> Never {
+    static func fire(supportedApiLevels: Range<Int> = Self.supportedApiLevels, arguments: [String] = Array(CommandLine.arguments.dropFirst())) -> Never {
         do {
             try Self.shoot(supportedApiLevels: supportedApiLevels, arguments: arguments)
             exit(0)
@@ -19,14 +19,14 @@ public extension Arrow {
         }
     }
 
-    public static func shoot(supportedApiLevels: Range<Int>, arguments: [String]) throws {
+    static func shoot(supportedApiLevels: Range<Int>, arguments: [String]) throws {
         let minimumArguments = 3
-            guard arguments.count >= minimumArguments else {
-                throw ArrowError.notEnoughArguments(got: arguments, expectedAtLeast: minimumArguments)
-            }
-            guard let apiLevel = Int(arguments[0]), supportedApiLevels.contains(apiLevel) else {
-                throw ArrowError.invalidApiLevel(got: arguments[0], expected: supportedApiLevels)
-            }
+        guard arguments.count >= minimumArguments else {
+            throw ArrowError.notEnoughArguments(got: arguments, expectedAtLeast: minimumArguments)
+        }
+        guard let apiLevel = Int(arguments[0]), supportedApiLevels.contains(apiLevel) else {
+            throw ArrowError.invalidApiLevel(got: arguments[0], expected: supportedApiLevels)
+        }
         return try shoot(
             archerfileContents: arguments[1],
             arrowContents: arguments[2],
@@ -34,7 +34,7 @@ public extension Arrow {
         )
     }
 
-    public static func shoot(archerfileContents: String, arrowContents: String, arguments: [String]) throws {
+    static func shoot(archerfileContents: String, arrowContents: String, arguments: [String]) throws {
         guard let archerfileData = archerfileContents.data(using: .utf8), let scriptData = arrowContents.data(using: .utf8) else {
             throw ArrowError.couldNotReadDataFromInput
         }
@@ -42,8 +42,8 @@ public extension Arrow {
         let arrow = try parseArrow(from: scriptData)
         let options = try parseExecutionOptions(from: scriptData)
         let invocationPrefix = options.shouldPassArrowParameters
-                ? [String(Self.supportedApiLevels.upperBound - 1), archerfileContents, arrowContents]
-                : []
+            ? [String(Self.supportedApiLevels.upperBound - 1), archerfileContents, arrowContents]
+            : []
         return try arrow.fire(
             archerfile: archerfile,
             arguments: invocationPrefix + arguments

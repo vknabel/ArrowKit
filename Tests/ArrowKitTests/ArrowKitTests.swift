@@ -1,5 +1,5 @@
-import XCTest
 @testable import ArrowKit
+import XCTest
 
 class ArrowKitTests: XCTestCase {
     func testExample() {
