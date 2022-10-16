@@ -8,24 +8,73 @@
     <script src="js/jquery.min.js" defer></script>
     <script src="js/jazzy.js" defer></script>
     
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
   </head>
   <body>
     <a title="  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (0% documented)</p>
+        <p><a href="index.html"> Docs</a> (100% documented)</p>
+        <div class="header-right">
+          <form role="search" action="search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </div>
       </div>
     </header>
     <div class="content-wrapper">
       <p id="breadcrumbs">
         <a href="index.html"> Reference</a>
-        <img id="carat" src="img/carat.png" />
+        <img id="carat" src="img/carat.png" alt=""/>
           Reference
       </p>
     </div>
     <div class="content-wrapper">
       <nav class="sidebar">
         <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/ArrowError.html">ArrowError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions.html#/c:objc(cs)NSError">NSError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/Arrow.html">Arrow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ExitCodeError.html">ExitCodeError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/AnyArrow.html">AnyArrow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Archerfile.html">Archerfile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Null.html">Null</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -37,14 +86,14 @@
 <p>A helper framework to write arrows for <a href="https://github.com/vknabel/Archery">Archery</a> in Swift.</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">ArrowKit</span>
 
-<span class="kd">struct</span> <span class="kt">YourArrow</span><span class="p">:</span> <span class="nf">Arrow</span> <span class="p">{</span>
+<span class="kd">struct</span> <span class="kt">YourArrow</span><span class="p">:</span> <span class="kt">Arrow</span> <span class="p">{</span>
     <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
 
-    <span class="kd">func</span> <span class="nf">fire</span><span class="p">(</span><span class="n">archerfile</span> <span class="nv">arrowFile</span><span class="p">:</span> <span class="kt">ArrowKit</span><span class="o">.</span><span class="kt">Archerfile</span><span class="p">,</span> <span class="nv">arguments</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">])</span> <span class="nf">throws</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">fire</span><span class="p">(</span><span class="n">archerfile</span> <span class="nv">arrowFile</span><span class="p">:</span> <span class="kt">ArrowKit</span><span class="o">.</span><span class="kt">Archerfile</span><span class="p">,</span> <span class="nv">arguments</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">])</span> <span class="k">throws</span> <span class="p">{</span>
         <span class="nf">print</span><span class="p">(</span><span class="s">"Hello </span><span class="se">\(</span><span class="n">name</span><span class="se">)</span><span class="s">!"</span><span class="p">)</span>
-        <span class="k">if</span> <span class="o">!</span><span class="n">arguments</span><span class="o">.</span><span class="nf">isEmpty</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="o">!</span><span class="n">arguments</span><span class="o">.</span><span class="n">isEmpty</span> <span class="p">{</span>
             <span class="nf">print</span><span class="p">(</span><span class="s">"Your arguments are:"</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">arg</span> <span class="k">in</span> <span class="nf">arguments</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="n">arg</span> <span class="k">in</span> <span class="n">arguments</span> <span class="p">{</span>
                 <span class="nf">print</span><span class="p">(</span><span class="s">" </span><span class="se">\(</span><span class="n">arg</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
             <span class="p">}</span>
         <span class="p">}</span>
@@ -56,7 +105,7 @@
 <h2 id='installation' class='heading'>Installation</h2>
 
 <p>Using the Swift Package Manager</p>
-<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/vknabel/ArrowKit.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"0.1.0"</span><span class="p">),</span>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/vknabel/ArrowKit.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"0.2.3"</span><span class="p">),</span>
 </code></pre>
 <h2 id='contributors' class='heading'>Contributors</h2>
 
@@ -70,11 +119,10 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-08)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2022 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2022-10-16)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
         </section>
       </article>
     </div>
   </body>
-</div>
 </html>
